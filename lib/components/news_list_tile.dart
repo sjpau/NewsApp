@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:newsapp/style/theme.dart';
 
 class NewsTile extends StatelessWidget {
   final String imageUrl;
@@ -18,21 +19,20 @@ class NewsTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 120,
-      margin: const EdgeInsets.all(4.0),
+      margin: ThemeStyles.newsTileMargin,
       child: Card(
         child: Row(
           children: [
             Container(
               width: imageSize,
               height: imageSize,
-              decoration: BoxDecoration(
+              decoration: ThemeStyles.newsTileImageDecoration.copyWith(
                 image: imageUrl.isNotEmpty
                     ? DecorationImage(
                         image: NetworkImage(imageUrl),
                         fit: BoxFit.cover,
                       )
                     : null,
-                color: Colors.grey,
               ),
               child: imageUrl.isEmpty
                   ? Icon(Icons.broken_image, size: imageSize / 2)
@@ -48,19 +48,14 @@ class NewsTile extends StatelessWidget {
                       title,
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16.0,
-                      ),
+                      style: ThemeStyles.newsTileTitleStyle,
                     ),
                     const Spacer(),
                     Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         date,
-                        style: const TextStyle(
-                          color: Colors.grey,
-                        ),
+                        style: ThemeStyles.newsTileDateStyle,
                       ),
                     ),
                   ],

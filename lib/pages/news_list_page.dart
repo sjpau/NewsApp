@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:intl/intl.dart';
 import 'package:newsapp/components/news_list_tile.dart';
+import 'package:newsapp/style/theme.dart';
 import '../utils/error_utils.dart';
 import '../secret.dart';
 
@@ -48,22 +49,12 @@ class _NewsListPageState extends State<NewsListPage> {
     return Scaffold(
       appBar: AppBar(
         flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [
-                Colors.deepPurple,
-                Colors.purple,
-                Colors.pink,
-                Colors.orange,
-              ],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
-            ),
-          ),
+          decoration: ThemeStyles.appBarGradientDecoration,
         ),
-        title: const Text('OnBoarding App'),
+        title:
+            const Text('OnBoarding App', style: ThemeStyles.appBarTitleStyle),
         leading: IconButton(
-          icon: Icon(Icons.menu),
+          icon: const Icon(Icons.menu),
           onPressed: () {
             try {
               Scaffold.of(context).openDrawer();
@@ -74,12 +65,11 @@ class _NewsListPageState extends State<NewsListPage> {
           },
         ),
       ),
-      drawer: Drawer(),
+      drawer: const Drawer(),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
           : RefreshIndicator(
-              onRefresh:
-                  _fetchTopHeadlines, // NOTE: setState is called inside on success
+              onRefresh: _fetchTopHeadlines,
               child: ListView.builder(
                 itemCount: _articles.length,
                 itemBuilder: (context, index) {
