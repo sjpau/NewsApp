@@ -19,6 +19,10 @@ class _NewsListPageState extends State<NewsListPage> {
     _newsStore.fetchTopHeadlines();
   }
 
+  Future<void> _refreshNews() async {
+    await _newsStore.fetchTopHeadlines();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -51,20 +55,23 @@ class _NewsListPageState extends State<NewsListPage> {
             return Center(child: Text(_newsStore.errorMessage!));
           }
 
-          return ListView.builder(
-            itemCount: _newsStore.articles.length,
-            itemBuilder: (context, index) {
-              final article = _newsStore.articles[index];
-              return NewsTile(
-                imageUrl: article.urlToImage ?? '',
-                title: article.title,
-                date: article.publishedAt ?? 'Date not available',
-                imageSize: 100.0,
-                author: article.author,
-                description: article.description ?? '',
-                url: article.url,
-              );
-            },
+          return RefreshIndicator(
+            onRefresh: _refreshNews,
+            child: ListView.builder(
+              itemCount: _newsStore.articles.length,
+              itemBuilder: (context, index) {
+                final article = _newsStore.articles[index];
+                return NewsTile(
+                  imageUrl: article.urlToImage ?? '',
+                  title: article.title,
+                  date: article.publishedAt ?? 'Date not available',
+                  imageSize: 100.0,
+                  author: article.author,
+                  description: article.description ?? '',
+                  url: article.url,
+                );
+              },
+            ),
           );
         },
       ),
