@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:newsapp/components/news_list_tile.dart';
+import 'package:newsapp/locators/service_locator.dart';
 import 'package:newsapp/repository/news_store.dart';
 import 'package:newsapp/style/theme.dart';
 import '../utils/error_utils.dart';
@@ -11,7 +12,7 @@ class NewsListPage extends StatefulWidget {
 }
 
 class _NewsListPageState extends State<NewsListPage> {
-  final NewsStore _newsStore = NewsStore();
+  final NewsStore _newsStore = getIt<NewsStore>();
 
   @override
   void initState() {
