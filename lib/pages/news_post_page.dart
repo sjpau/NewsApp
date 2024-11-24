@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:newsapp/style/theme.dart';
 
@@ -137,7 +138,11 @@ class _NewsPostPageState extends State<NewsPostPage> {
                               style: ThemeStyles.newsTileDateStyle,
                             ),
                           Text(
-                            '${widget.date}',
+                            widget.date.isNotEmpty
+                                ? DateFormat('yyyy-MMMM-dd HH:mm:ss').format(
+                                    DateTime.tryParse(widget.date) ??
+                                        DateTime.now())
+                                : 'Date not available',
                             style: ThemeStyles.newsTileDateStyle,
                           ),
                         ],

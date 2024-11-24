@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:intl/intl.dart';
 import 'package:newsapp/components/news_list_tile.dart';
 import 'package:newsapp/locators/service_locator.dart';
 import 'package:newsapp/repository/news_store.dart';
@@ -65,10 +66,18 @@ class _NewsListPageState extends State<NewsListPage> {
               itemCount: _newsStore.articles.length,
               itemBuilder: (context, index) {
                 final article = _newsStore.articles[index];
+                late String useDate;
+                if (article.publishedAt != null) {
+                  var str = article.publishedAt as String;
+                  useDate = DateFormat('yyyy-MMMM-dd HH:mm:ss')
+                      .format(DateTime.parse(str));
+                } else {
+                  useDate = 'Date is not available';
+                }
                 return NewsTile(
                   imageUrl: article.urlToImage ?? '',
                   title: article.title,
-                  date: article.publishedAt ?? 'Date not available',
+                  date: useDate,
                   imageSize: 100.0,
                   author: article.author,
                   description: article.description ?? '',

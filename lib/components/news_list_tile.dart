@@ -75,7 +75,7 @@ class NewsTile extends StatelessWidget {
                       ),
                       const Spacer(),
                       Align(
-                        alignment: Alignment.centerLeft,
+                        alignment: Alignment.center,
                         child: Text(
                           date,
                           style: ThemeStyles.newsTileDateStyle,

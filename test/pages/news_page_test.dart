@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:intl/intl.dart';
 import 'package:newsapp/pages/news_post_page.dart';
 import 'package:network_image_mock/network_image_mock.dart';
 
@@ -32,7 +33,10 @@ void main() {
       expect(find.text(testTitle), findsOneWidget);
       expect(find.text(testDescription), findsOneWidget);
       expect(find.text(testAuthor), findsOneWidget);
-      expect(find.text(testDate), findsOneWidget);
+      final parsedDate = DateTime.parse(testDate);
+      final formattedDate =
+          DateFormat('yyyy-MMMM-dd HH:mm:ss').format(parsedDate);
+      expect(find.text(formattedDate), findsOneWidget);
     });
 
     testWidgets('should display broken image icon if imageUrl is empty',
