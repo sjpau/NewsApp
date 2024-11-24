@@ -33,7 +33,10 @@ class _NewsListPageState extends State<NewsListPage> {
         title:
             const Text('OnBoarding App', style: ThemeStyles.appBarTitleStyle),
         leading: IconButton(
-          icon: const Icon(Icons.menu),
+          icon: const Icon(
+            Icons.menu,
+            color: Colors.white,
+          ),
           onPressed: () {
             try {
               Scaffold.of(context).openDrawer();
