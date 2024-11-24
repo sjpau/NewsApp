@@ -60,6 +60,9 @@ class _NewsListPageState extends State<NewsListPage> {
                 title: article.title,
                 date: article.publishedAt ?? 'Date not available',
                 imageSize: 100.0,
+                author: article.author,
+                description: article.description ?? '',
+                url: article.url,
               );
             },
           );

@@ -6,16 +6,18 @@ part 'news_model.g.dart';
 class NewsModel {
   final String title;
   final String? description;
-  final String? url;
+  final String url;
   final String? urlToImage;
   final String? publishedAt;
+  final String? author;
 
   NewsModel({
     required this.title,
     this.description,
-    this.url,
+    required this.url,
     this.urlToImage,
     this.publishedAt,
+    this.author,
   });
 
   factory NewsModel.fromJson(Map<String, dynamic> json) =>
