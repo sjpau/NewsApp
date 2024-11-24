@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'pages/news_list_page.dart';
+import 'package:newsapp/locators/service_locator.dart'; // Import the service locator
 
 void main() {
+  setupLocator();
   runApp(const MyApp());
 }
 
