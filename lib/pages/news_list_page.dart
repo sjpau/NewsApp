@@ -1,11 +1,9 @@
-// news_list_page.dart
 import 'package:flutter/material.dart';
-import 'package:dio/dio.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:newsapp/components/news_list_tile.dart';
+import 'package:newsapp/repository/news_store.dart';
 import 'package:newsapp/style/theme.dart';
 import '../utils/error_utils.dart';
-import '../secret.dart';
 
 class NewsListPage extends StatefulWidget {
   @override
@@ -13,35 +11,12 @@ class NewsListPage extends StatefulWidget {
 }
 
 class _NewsListPageState extends State<NewsListPage> {
-  final String _apiUrl =
-      'https://newsapi.org/v2/top-headlines?country=us&apiKey=$API_KEY';
-  List<dynamic> _articles = [];
-  bool _isLoading = true;
+  final NewsStore _newsStore = NewsStore();
 
   @override
   void initState() {
     super.initState();
-    _fetchTopHeadlines();
-  }
-
-  Future<void> _fetchTopHeadlines() async {
-    setState(() {
-      _isLoading = true;
-    });
-    try {
-      final dio = Dio();
-      final response = await dio.get(_apiUrl);
-      if (response.statusCode == 200) {
-        setState(() {
-          _articles = response.data['articles'];
-          _isLoading = false;
-        });
-      } else {
-        showError(context, 'Failed to load news. Please try again later.');
-      }
-    } catch (e) {
-      showError(context, 'An error occurred while fetching the news.');
-    }
+    _newsStore.fetchTopHeadlines();
   }
 
   @override
@@ -66,30 +41,30 @@ class _NewsListPageState extends State<NewsListPage> {
         ),
       ),
       drawer: const Drawer(),
-      body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
-          : RefreshIndicator(
-              onRefresh: _fetchTopHeadlines,
-              child: ListView.builder(
-                itemCount: _articles.length,
-                itemBuilder: (context, index) {
-                  final article = _articles[index];
-                  String formattedDate = 'Unknown Date';
-                  if (article['publishedAt'] != null) {
-                    DateTime parsedDate =
-                        DateTime.parse(article['publishedAt']);
-                    formattedDate =
-                        DateFormat('yyyy-MMMM-dd HH:mm:ss').format(parsedDate);
-                  }
-                  return NewsTile(
-                    imageUrl: article['urlToImage'] ?? '',
-                    title: article['title'] ?? 'No Title',
-                    date: formattedDate,
-                    imageSize: MediaQuery.of(context).size.width / 3,
-                  );
-                },
-              ),
-            ),
+      body: Observer(
+        builder: (_) {
+          if (_newsStore.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          if (_newsStore.errorMessage != null) {
+            return Center(child: Text(_newsStore.errorMessage!));
+          }
+
+          return ListView.builder(
+            itemCount: _newsStore.articles.length,
+            itemBuilder: (context, index) {
+              final article = _newsStore.articles[index];
+              return NewsTile(
+                imageUrl: article.urlToImage ?? '',
+                title: article.title,
+                date: article.publishedAt ?? 'Date not available',
+                imageSize: 100.0,
+              );
+            },
+          );
+        },
+      ),
     );
   }
 }
